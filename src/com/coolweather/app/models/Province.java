@@ -12,11 +12,15 @@ public class Province {
 		this.id = id;
 	}
 	
+	public int getId(int id) {
+		return id;
+	}
+	
 	public String getProvinceName() {
 		return provinceName;
 	}
 	
-	public void setProviceName(String proviceName) {
+	public void setProviceName(String provinceName) {
 		this.provinceName = provinceName;
 	}
 	
@@ -24,7 +28,7 @@ public class Province {
 		return provinceCode;
 	}
 	
-	public void setProviceCode(String proviceCode) {
+	public void setProviceCode(String provinceCode) {
 		this.provinceCode = provinceCode;
 	}
 }

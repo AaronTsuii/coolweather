@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class CoolWeatherDB {
 	
@@ -18,6 +19,7 @@ public class CoolWeatherDB {
 	private SQLiteDatabase db;
 	
 	private CoolWeatherDB(Context context) {
+		Log.d("1","3");
 		CoolWeatherOpenHelper dbHelper = new CoolWeatherOpenHelper(context,DB_NAME,null,VERSION);
 		db = dbHelper.getWritableDatabase();
 	}
@@ -25,6 +27,7 @@ public class CoolWeatherDB {
 	public synchronized static CoolWeatherDB getInstance(Context context) {
 		if (coolWeatherDB == null) 
 			coolWeatherDB = new CoolWeatherDB(context);
+		Log.d("1","4");
 		return coolWeatherDB;
 	}
 	
@@ -34,11 +37,12 @@ public class CoolWeatherDB {
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
 			values.put("province_code", province.getProvinceCode());
+			Log.d("存入单个城市编码",""+ province.getProvinceCode());
 			db.insert("Province", null, values);
 		}
 	}
 	//读取省份信息
-	public List<Province> loadProvince() {
+	public List<Province> loadProvinces() {
 	    List<Province> list = new ArrayList<Province>();
 	    Cursor cursor = db.query("Province", null, null, null, null, null, null);
 	    if(cursor.moveToFirst()) {
@@ -47,6 +51,7 @@ public class CoolWeatherDB {
 	    		province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 	    		province.setProviceName(cursor.getString(cursor.getColumnIndex("province_name")));
 	    		province.setProviceCode(cursor.getString(cursor.getColumnIndex("province_code")));
+	    		
 	    		list.add(province);
 	    		
 	    	}while(cursor.moveToNext());
@@ -92,7 +97,7 @@ public class CoolWeatherDB {
 				ContentValues values = new ContentValues();
 				values.put("county_name", county.getCountyName());
 				values.put("county_code", county.getCountyCode());
-				values.put("pcity_id", county.getCityId());
+				values.put("city_id", county.getCityId());
 				db.insert("County", null, values);
 			}
 		}
