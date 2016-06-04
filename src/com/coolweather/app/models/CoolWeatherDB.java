@@ -37,7 +37,7 @@ public class CoolWeatherDB {
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
 			values.put("province_code", province.getProvinceCode());
-			Log.d("存入单个城市编码",""+ province.getProvinceCode());
+			Log.d("存入单个省份编码",""+ province.getProvinceCode());
 			db.insert("Province", null, values);
 		}
 	}
@@ -51,7 +51,6 @@ public class CoolWeatherDB {
 	    		province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 	    		province.setProviceName(cursor.getString(cursor.getColumnIndex("province_name")));
 	    		province.setProviceCode(cursor.getString(cursor.getColumnIndex("province_code")));
-	    		
 	    		list.add(province);
 	    		
 	    	}while(cursor.moveToNext());

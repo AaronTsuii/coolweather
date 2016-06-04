@@ -53,11 +53,14 @@ public class ChooseAreaActivity extends Activity{
 	//选中的县
 	private County selectedCounty;
 	private int currentLevel;
+	//是否从WeatherActivity中条转过来
+	private boolean isFromWeatherActivity;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
 		SharedPreferences prefs =  PreferenceManager.getDefaultSharedPreferences(this);
-		if(prefs.getBoolean("city_selected", false)){
+		if(prefs.getBoolean("city_selected", false) && !isFromWeatherActivity){
 			Intent intent = new Intent(this,WeatherActivity.class);
 			startActivity(intent);
 			finish();
@@ -75,7 +78,7 @@ public class ChooseAreaActivity extends Activity{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int index, long arg3) {
-				Log.d("text", "a");
+				
 				// TODO Auto-generated method stub
 				if(currentLevel == LEVEL_PROVINCE) {
 					selectedProvince = provinceList.get(index);
@@ -100,9 +103,9 @@ public class ChooseAreaActivity extends Activity{
 	private void queryProvinces() {
 		// TODO Auto-generated method stub
 		provinceList = coolWeatherDB.loadProvinces();
-		//Log.d("1","5");
+		
 		if(provinceList.size() > 0) {
-			//Log.d("1","1");
+			
 			dataList.clear();
 			for(Province province: provinceList) {
 				//Log.d("1",province.getProvinceName());
@@ -114,13 +117,12 @@ public class ChooseAreaActivity extends Activity{
 			currentLevel = LEVEL_PROVINCE;
 		}else {
 			queryFromServer(null,"province");
-			//Log.d("1","6");
+			
 		}
 	}
 	//查询选中分省内所有的市，优先从数据库查询，如果没有再去服务器上查询
 	protected void queryCities() {
 		// TODO Auto-generated method stub
-		//Log.d("2", "a"+ selectedProvince.getId());
 		cityList = coolWeatherDB.loadCities(selectedProvince.getId());
 		if(cityList.size() > 0) {
 			dataList.clear();
@@ -229,7 +231,14 @@ public class ChooseAreaActivity extends Activity{
 			queryCities();
 		} else if(currentLevel == LEVEL_CITY) {
 			queryProvinces();
-		} else finish();
+		} else {
+			if(isFromWeatherActivity) {
+				Intent intent = new Intent(this,WeatherActivity.class);
+				startActivity(intent);
+			}
+			finish();
+			
+		}
 	}
 
 }
