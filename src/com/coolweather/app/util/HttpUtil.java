@@ -18,29 +18,28 @@ public class HttpUtil {
 				// TODO Auto-generated method stub
 				HttpURLConnection connection = null;
 				try{
-					Log.d("2","1" + address);
+					Log.d("2","1");
 					URL url = new URL(address);//传入目标的网络地址
 					connection = (HttpURLConnection) url.openConnection();
-					connection.setDoInput(true);
+					Log.d("2","2");
 					connection.setRequestMethod("GET");//get表示从服务器那里获得数据，若用post则表示提供数据给服务器
 					connection.setConnectTimeout(8000);
+					Log.d("2","3");
 					connection.setReadTimeout(8000);
 					Log.d("2","44");
-					Log.d("connection","4" + connection.toString());
-					connection.connect();
 					InputStream in = connection.getInputStream();
 					Log.d("2","4");
 					//对获取到的输入流进行读取
 					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 					StringBuilder response = new StringBuilder();
 					String line;
+					Log.d("2","5");
 					while((line = reader.readLine()) != null) {
 						response.append(line);
 					}
-					reader.close();
-					in.close();
 					Log.d("从服务器获得的数据",response.toString());
 					if(listener != null) {
+						Log.d("2","6");
 						listener.onFinish(response.toString());
 					}
 				}catch(Exception e) {
